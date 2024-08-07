@@ -1,8 +1,16 @@
+import {
+  FlowOperationType,
+  StepLocationRelativeToParent,
+  TriggerType,
+  flowHelper,
+} from '@activepieces/shared';
 import { useDraggable } from '@dnd-kit/core';
 import { TooltipTrigger } from '@radix-ui/react-tooltip';
 import { Handle, Position } from '@xyflow/react';
 import { CircleAlert, CopyPlus, Replace, Trash } from 'lucide-react';
 import React, { useState } from 'react';
+
+import { ApNode } from '../flow-canvas-utils';
 
 import { useBuilderStateContext } from '@/app/builder/builder-hooks';
 import { Button } from '@/components/ui/button';
@@ -10,14 +18,6 @@ import { Tooltip, TooltipContent } from '@/components/ui/tooltip';
 import { UNSAVED_CHANGES_TOAST, useToast } from '@/components/ui/use-toast';
 import { piecesHooks } from '@/features/pieces/lib/pieces-hook';
 import { cn } from '@/lib/utils';
-import {
-  FlowOperationType,
-  StepLocationRelativeToParent,
-  TriggerType,
-  flowHelper,
-} from '@activepieces/shared';
-
-import { ApNode } from '../flow-canvas-utils';
 
 const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
   const { toast } = useToast();
@@ -90,7 +90,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
 
   return (
     <div
-      className={cn('h-[70px] w-[260px] transition-all', {
+      className={cn('h-[70px] w-[80px] transition-all', {
         'border-primary': toolbarOpen || isSelected,
         'bg-background border border-solid box-border': !isDragging,
       })}
@@ -142,7 +142,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
                 <div className="flex items-center justify-center min-w-[46px] h-full">
                   <img src={stepMetadata?.logoUrl} width="46" height="46" />
                 </div>
-                <div className="grow flex flex-col items-start justify-center min-w-0 w-full">
+                <div className="min-w-0 absolute top-20 align-center">
                   <div className="text-sm text-ellipsis overflow-hidden whitespace-nowrap w-full">
                     {data.step!.displayName}
                   </div>
@@ -193,7 +193,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
                           <Replace className="w-4 h-4" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent side="left">
+                      <TooltipContent side="top">
                         Replace Trigger
                       </TooltipContent>
                     </Tooltip>
@@ -214,7 +214,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
                             <Trash className="w-4 h-4 text-destructive" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side="left">Delete step</TooltipContent>
+                        <TooltipContent side="top">Delete step</TooltipContent>
                       </Tooltip>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -230,7 +230,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
                             <CopyPlus className="w-4 h-4" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side="left">
+                        <TooltipContent side="top">
                           Duplicate step
                         </TooltipContent>
                       </Tooltip>
@@ -245,9 +245,9 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
         <Handle
           type="source"
           style={{ opacity: 0 }}
-          position={Position.Bottom}
+          position={Position.Right}
         />
-        <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
       </div>
     </div>
   );
