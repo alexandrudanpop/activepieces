@@ -1,6 +1,20 @@
-import { Bug, Link2, Logs, Settings, Shield, Workflow } from 'lucide-react';
+import { ApFlagId, isNil } from '@activepieces/shared';
+import {
+  AlertCircle,
+  Link2,
+  Logs,
+  Shield,
+  Workflow,
+  Wrench,
+} from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+import { Button } from '../../components/ui/button';
+import { UserAvatar } from '../../components/ui/user-avatar';
+// import { InviteUserDialog } from '../../features/team/component/invite-user-dialog';
+
+import { FlagGuard } from './flag-gaurd';
 
 import { ProgressCircularComponent } from '@/components/custom/circular-progress';
 import {
@@ -12,13 +26,7 @@ import { issueHooks } from '@/features/issues/hooks/issue-hooks';
 import { ProjectSwitcher } from '@/features/projects/components/project-switcher';
 import { projectHooks } from '@/hooks/project-hooks';
 import { theme } from '@/lib/theme';
-import { ApFlagId, isNil } from '@activepieces/shared';
-
-import { Button } from '../../components/ui/button';
-import { UserAvatar } from '../../components/ui/user-avatar';
-import { InviteUserDialog } from '../../features/team/component/invite-user-dialog';
-
-import { FlagGuard } from './flag-gaurd';
+import { formatUtils } from '@/lib/utils';
 
 type Link = {
   icon: React.ReactNode;
@@ -50,7 +58,7 @@ const CustomTooltipLink = ({
         className={`relative flex flex-col items-center justify-center gap-1`}
       >
         <Icon
-          className={`size-10 p-2 hover:text-primary rounded-lg transition-colors ${
+          className={`size-10 p-2.5 hover:text-primary rounded-lg transition-colors ${
             isActive ? 'bg-accent text-primary' : ''
           } ${extraClasses || ''}`}
         />
@@ -87,7 +95,8 @@ const TaskLimitButton = React.memo(() => {
           />
           <span>
             <strong>
-              {project.usage.tasks}/{project.plan.tasks}
+              {formatUtils.formatNumber(project.usage.tasks)}/
+              {formatUtils.formatNumber(project.plan.tasks)}
             </strong>{' '}
             Tasks Per Month
           </span>
@@ -108,7 +117,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           <div className="h-[48px] items-center justify-center p-2">
             <Tooltip>
               <TooltipTrigger asChild>
-                <img src={theme.logoIconUrl} alt="logo" />
+                <img src={theme.logoIconUrl} alt="logo" className="w-8 h-8" />
               </TooltipTrigger>
               <TooltipContent side="right">{theme.websiteName}</TooltipContent>
             </Tooltip>
@@ -118,7 +127,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           <CustomTooltipLink
             to="/issues"
             label="Issues"
-            Icon={Bug}
+            Icon={AlertCircle}
             notification={showIssuesNotification}
           />
           <CustomTooltipLink
@@ -126,7 +135,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             label="Connections"
             Icon={Link2}
           />
-          <CustomTooltipLink to="/settings" label="Settings" Icon={Settings} />
+          <CustomTooltipLink to="/settings" label="Settings" Icon={Wrench} />
         </nav>
       </aside>
       <div className="flex-1 p-4">
@@ -135,7 +144,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             <ProjectSwitcher />
             <div className="grow"></div>
             <div className="flex items-center justify-center gap-4">
-              <InviteUserDialog></InviteUserDialog>
+              {/* <InviteUserDialog></InviteUserDialog>
               <Button
                 variant={'outline'}
                 size="sm"
@@ -144,7 +153,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
                 <Shield className="size-4" />
                 <span>Platform Admin</span>
               </Button>
-              <TaskLimitButton />
+              <TaskLimitButton />  */}
               <UserAvatar />
             </div>
           </div>

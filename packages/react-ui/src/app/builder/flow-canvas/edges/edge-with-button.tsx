@@ -2,7 +2,7 @@ import { flowHelper, isNil } from '@activepieces/shared';
 import { useDndMonitor, useDroppable, DragMoveEvent } from '@dnd-kit/core';
 import { BaseEdge } from '@xyflow/react';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { useBuilderStateContext } from '../../builder-hooks';
 import {
@@ -76,7 +76,7 @@ function getEdgePath({
   };
 }
 
-const ApEdgeWithButton: React.FC<ApEdgeWithButtonProps> = (props) => {
+const ApEdgeWithButton = React.memo((props: ApEdgeWithButtonProps) => {
   const [showButtonShadow, setShowButtonShadow] = useState(false);
   const [activeDraggingStep, flowVersion, clickOnNewNodeButton] =
     useBuilderStateContext((state) => [
@@ -148,7 +148,7 @@ const ApEdgeWithButton: React.FC<ApEdgeWithButtonProps> = (props) => {
               clickOnNewNodeButton(
                 'action',
                 props.data.parentStep!,
-                props.data.stepLocationRelativeToParent!,
+                props.data.stepLocationRelativeToParent,
               )
             }
           >
@@ -158,6 +158,7 @@ const ApEdgeWithButton: React.FC<ApEdgeWithButtonProps> = (props) => {
       )}
     </>
   );
-};
+});
 
+ApEdgeWithButton.displayName = 'ApEdgeWithButton';
 export { ApEdgeWithButton };
