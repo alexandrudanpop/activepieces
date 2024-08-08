@@ -1,13 +1,9 @@
 import {
-  FlowOperationType,
   StepLocationRelativeToParent,
   TriggerType,
   flowHelper,
   FlowOperationType,
   FlowRun,
-  StepLocationRelativeToParent,
-  TriggerType,
-  flowHelper,
   isNil,
 } from '@activepieces/shared';
 import { useDraggable } from '@dnd-kit/core';
@@ -141,7 +137,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
             ? 'hsl(var(--primary))'
             : 'hsl(var(--border))',
       }}
-      className={cn('h-[70px] w-[260px] transition-all border-box border', {
+      className={cn('h-[80px] w-[80px] transition-all border-box border', {
         'border-primary': toolbarOpen || isSelected,
         'bg-background': !isDragging,
       })}
@@ -189,14 +185,18 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
                     alt={stepMetadata?.displayName}
                   />
                 </div>
-                <div className="min-w-0 absolute top-20 align-center">
-                  <div className="text-sm text-ellipsis overflow-hidden whitespace-nowrap w-full">
-                    {data.step!.displayName}
-                  </div>
-                  <div className="text-xs text-muted-foreground text-ellipsis overflow-hidden whitespace-nowrap w-full">
-                    {stepMetadata?.displayName}
-                  </div>
+
+                <div className="text-xs text-muted-foreground text-ellipsi text-center overflow-hidden whitespace-nowrap w-full absolute top-[-16px] left-0">
+                  {stepMetadata?.displayName}
                 </div>
+                {stepMetadata?.displayName !== data.step!.displayName && (
+                  <div className="min-w-0 absolute top-20 max-w-24">
+                    <div className="text-xs text-muted-foreground overflow-hidden w-full">
+                      {data.step!.displayName}
+                    </div>
+                  </div>
+                )}
+
                 <div className="w-4 flex items-center justify-center">
                   {statusInfo?.Icon &&
                     React.createElement(statusInfo.Icon, {

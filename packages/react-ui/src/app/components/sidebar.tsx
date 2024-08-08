@@ -10,14 +10,11 @@ import {
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { Button, Button } from '../../components/ui/button';
-import { UserAvatar, UserAvatar } from '../../components/ui/user-avatar';
-import {
-  InviteUserDialog,
-  InviteUserDialog,
-} from '../../features/team/component/invite-user-dialog';
+import { Button } from '../../components/ui/button';
+import { UserAvatar } from '../../components/ui/user-avatar';
+// import { InviteUserDialog } from '../../features/team/component/invite-user-dialog';
 
-import { FlagGuard, FlagGuard } from './flag-gaurd';
+import { FlagGuard } from './flag-gaurd';
 
 import { ProgressCircularComponent } from '@/components/custom/circular-progress';
 import {
@@ -111,7 +108,7 @@ const TaskLimitButton = React.memo(() => {
 TaskLimitButton.displayName = 'TaskLimitButton';
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
-  const { data: showIssuesNotification } = issueHooks.useIssuesNotification();
+  // const { data: showIssuesNotification } = issueHooks.useIssuesNotification();
 
   return (
     <div className="flex min-h-screen w-full ">
@@ -127,12 +124,12 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           </div>
           <CustomTooltipLink to="/flows" label="Flows" Icon={Workflow} />
           <CustomTooltipLink to="/runs" label="Runs" Icon={Logs} />
-          <CustomTooltipLink
+          {/* <CustomTooltipLink
             to="/issues"
             label="Issues"
             Icon={AlertCircle}
             notification={showIssuesNotification}
-          />
+          /> */}
           <CustomTooltipLink
             to="/connections"
             label="Connections"
@@ -156,7 +153,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
                 <Shield className="size-4" />
                 <span>Platform Admin</span>
               </Button>
-              <TaskLimitButton /> */}
+              <TaskLimitButton />  */}
               <UserAvatar />
             </div>
           </div>

@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import {
   Action,
   ActionType,
@@ -9,6 +7,7 @@ import {
   assertNotNullOrUndefined,
   isNil,
 } from '@activepieces/shared';
+import { nanoid } from 'nanoid';
 
 const VERTICAL_OFFSET = 160;
 const HORIZONTAL_SPACE_BETWEEN_NODES = 80;
