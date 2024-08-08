@@ -108,7 +108,7 @@ const TaskLimitButton = React.memo(() => {
 TaskLimitButton.displayName = 'TaskLimitButton';
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
-  const { data: showIssuesNotification } = issueHooks.useIssuesNotification();
+  // const { data: showIssuesNotification } = issueHooks.useIssuesNotification();
 
   return (
     <div className="flex min-h-screen w-full ">
@@ -124,12 +124,12 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           </div>
           <CustomTooltipLink to="/flows" label="Flows" Icon={Workflow} />
           <CustomTooltipLink to="/runs" label="Runs" Icon={Logs} />
-          <CustomTooltipLink
+          {/* <CustomTooltipLink
             to="/issues"
             label="Issues"
             Icon={AlertCircle}
             notification={showIssuesNotification}
-          />
+          /> */}
           <CustomTooltipLink
             to="/connections"
             label="Connections"

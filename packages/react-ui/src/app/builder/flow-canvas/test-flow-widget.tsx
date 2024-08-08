@@ -74,7 +74,7 @@ const TestFlowWidget = React.memo(() => {
     <ViewportPortal>
       <div
         style={{
-          transform: 'translate(0px, -50px)',
+          transform: 'translate(-250px, 100px)',
           position: 'absolute',
           pointerEvents: 'auto',
         }}
@@ -107,7 +107,7 @@ const TestFlowWidget = React.memo(() => {
               </TooltipContent>
             </Tooltip>
           )}
-          {!flowVersion.valid && (
+          {/* {!flowVersion.valid && (
             <Button
               variant="ghost"
               className="h-8 bg-warning-100/50 text-warning-300 hover:bg-warning-100/80 hover:text-warning-300 border-none"
@@ -116,7 +116,7 @@ const TestFlowWidget = React.memo(() => {
             >
               Complete Settings
             </Button>
-          )}
+          )} */}
         </div>
       </div>
     </ViewportPortal>

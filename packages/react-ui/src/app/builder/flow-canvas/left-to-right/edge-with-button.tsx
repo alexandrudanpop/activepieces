@@ -74,8 +74,10 @@ function getEdgePath({
 
 const ApEdgeWithButton: React.FC<ApEdgeWithButtonProps> = (props) => {
   const isBranch =
-    props.data.stepLocationRelativeToParent === 'INSIDE_FALSE_BRANCH' ||
-    props.data.stepLocationRelativeToParent === 'INSIDE_TRUE_BRANCH';
+    props.data?.stepLocationRelativeToParent === 'INSIDE_FALSE_BRANCH' ||
+    props.data?.stepLocationRelativeToParent === 'INSIDE_TRUE_BRANCH';
+
+  // console.log(JSON.stringify(props, null, 2));
 
   const [showButtonShadow, setShowButtonShadow] = useState(false);
   const [activeDraggingStep, flowVersion, clickOnNewNodeButton] =
@@ -113,25 +115,18 @@ const ApEdgeWithButton: React.FC<ApEdgeWithButtonProps> = (props) => {
 
   return (
     <>
-      {isBranch ? (
-        <SmoothStepEdge
-          interactionWidth={0}
-          style={{ strokeWidth: 1.5 }}
-          label=""
-          sourceX={props.sourceX}
-          sourceY={props.sourceY}
-          targetX={props.targetX}
-          targetY={props.targetY}
-          sourcePosition={Position.Right}
-          targetPosition={Position.Left}
-        />
-      ) : (
-        <BaseEdge
-          interactionWidth={0}
-          path={edgePath}
-          style={{ strokeWidth: 1.5 }}
-        />
-      )}
+      <SmoothStepEdge
+        interactionWidth={0}
+        style={{ strokeWidth: 1.5 }}
+        // label={`Source: ${props.source!} Target: ${props.target!}`}
+        sourceX={props.sourceX}
+        sourceY={props.sourceY}
+        targetX={props.targetX}
+        targetY={props.targetY}
+        sourcePosition={Position.Right}
+        targetPosition={Position.Left}
+      />
+
       {isDropzone && props.data?.addButton && buttonPosition && (
         <foreignObject
           width={18}
@@ -170,6 +165,19 @@ const ApEdgeWithButton: React.FC<ApEdgeWithButtonProps> = (props) => {
           </div>
         </foreignObject>
       )}
+
+      {/* just for debug reasons */}
+      {/* <foreignObject
+        width={300}
+        height={300}
+        x={buttonPosition.x}
+        y={buttonPosition.y}
+      >
+        <p className="abosolute">
+          Source: {props.source!} Target: {props.target!}
+        </p>
+        <p className="abosolute">edge: {edgePath}</p>
+      </foreignObject> */}
     </>
   );
 };

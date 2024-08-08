@@ -124,6 +124,7 @@ const ApEdgeWithButton = React.memo((props: ApEdgeWithButtonProps) => {
           height={18}
           x={buttonPosition.x}
           y={buttonPosition.y}
+          data-testid={`add-button-${props.id}`}
           className={cn(
             'bg-primary w-[17px] h-[17px] rounded-[3px] box-content opacity-90',
             {
@@ -141,6 +142,7 @@ const ApEdgeWithButton = React.memo((props: ApEdgeWithButtonProps) => {
           height={18}
           x={buttonPosition.x}
           y={buttonPosition.y}
+          data-testid={`add-button-${props.id}`}
         >
           <div
             className="bg-[#a6b1bf] w-4 h-4 flex items-center justify-center"

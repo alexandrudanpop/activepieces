@@ -45,7 +45,6 @@ export const flowCanvasUtils = {
   convertFlowVersionToGraph(version: FlowVersion): ApGraph {
     return traverseFlow(version.trigger);
   },
-  createLeftToRightGraph: createLeftToRightGraph,
 };
 
 function traverseFlow(step: Action | Trigger | undefined): ApGraph {
@@ -122,48 +121,6 @@ function traverseFlow(step: Action | Trigger | undefined): ApGraph {
       return mergeGraph(graph, childGraph);
     }
   }
-}
-
-function createLeftToRightGraph(flowVersion: FlowVersion): ApGraph {
-  const graph = flowCanvasUtils.convertFlowVersionToGraph(flowVersion);
-
-  function getParentBranch(i: number) {
-    let parentBranchIndex = 0;
-    let hasParentBranch = false;
-    const indexesToCheck = [i - 1, i - 2];
-
-    indexesToCheck.forEach((parentIndex) => {
-      if (graph.nodes?.[parentIndex]?.data?.step?.type === 'BRANCH') {
-        parentBranchIndex = parentIndex;
-        hasParentBranch = true;
-      }
-    });
-
-    return { hasParentBranch, parentBranchIndex };
-  }
-
-  return {
-    ...graph,
-    nodes: graph.nodes.map((n, i) => {
-      console.log(JSON.stringify(n, null, 2));
-      const { hasParentBranch, parentBranchIndex } = getParentBranch(i);
-
-      const xPositionIncrement = hasParentBranch
-        ? 100 * (parentBranchIndex + 1)
-        : 80 * (i + 1);
-      // if (lastParentBranchIndex + 2 === i) {
-      //   xPositionIncrement = 100 * lastParentBranchIndex;
-      // }
-
-      return {
-        ...n,
-        position: {
-          x: n.position.y + xPositionIncrement,
-          y: n.position.x,
-        },
-      };
-    }),
-  };
 }
 
 function buildChildrenGraph(
