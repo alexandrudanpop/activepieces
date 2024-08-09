@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import {
   Action,
   ActionType,
@@ -9,6 +7,7 @@ import {
   assertNotNullOrUndefined,
   isNil,
 } from '@activepieces/shared';
+import { nanoid } from 'nanoid';
 
 const VERTICAL_OFFSET = 160;
 const HORIZONTAL_SPACE_BETWEEN_NODES = 80;
@@ -74,6 +73,7 @@ function traverseFlow(step: Action | Trigger | undefined): ApGraph {
         graph,
       );
     }
+    // change branch to switch case
     case ActionType.BRANCH: {
       const { nextAction, onSuccessAction, onFailureAction } = step;
 
@@ -89,6 +89,30 @@ function traverseFlow(step: Action | Trigger | undefined): ApGraph {
             : traverseFlow(g);
         },
       );
+
+      return buildChildrenGraph(
+        childrenGraphs,
+        [
+          StepLocationRelativeToParent.INSIDE_TRUE_BRANCH,
+          StepLocationRelativeToParent.INSIDE_FALSE_BRANCH,
+        ],
+        nextAction,
+        graph,
+      );
+    }
+    case ActionType.SWITCH: {
+      const { nextAction } = step;
+
+      const childrenGraphs = step.switchActions.map((g, index) => {
+        return isNil(g)
+          ? buildBigButton(
+              step.name,
+              index === 0
+                ? StepLocationRelativeToParent.INSIDE_TRUE_BRANCH
+                : StepLocationRelativeToParent.INSIDE_FALSE_BRANCH,
+            )
+          : traverseFlow(g);
+      });
 
       return buildChildrenGraph(
         childrenGraphs,
