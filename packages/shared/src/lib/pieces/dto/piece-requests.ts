@@ -2,11 +2,17 @@ import { Static, Type } from '@sinclair/typebox'
 import { ApEdition } from '../../flag/flag'
 import { PackageType, PieceCategory, PieceType } from '../piece'
 
-export const EXACT_VERSION_PATTERN = /^[0-9]+\.[0-9]+\.[0-9]+$/
-export const VERSION_PATTERN = /^([~^])?[0-9]+\.[0-9]+\.[0-9]+$/
+export const EXACT_VERSION_PATTERN = '^[0-9]+\\.[0-9]+\\.[0-9]+$'
+export const EXACT_VERSION_REGEX = new RegExp(EXACT_VERSION_PATTERN)
+const VERSION_PATTERN = '^([~^])?[0-9]+\\.[0-9]+\\.[0-9]+$'
 
-export const ExactVersionType = Type.RegExp(EXACT_VERSION_PATTERN)
-export const VersionType = Type.RegExp(VERSION_PATTERN)
+export const ExactVersionType = Type.String({
+    pattern: EXACT_VERSION_PATTERN,
+})
+export const VersionType = Type.String({
+    pattern: VERSION_PATTERN,
+})
+
 
 export enum SuggestionType {
     ACTION = 'ACTION',
@@ -81,6 +87,7 @@ export const PieceOptionRequest = Type.Object({
     flowVersionId: Type.String(),
     input: Type.Any({}),
     searchValue: Type.Optional(Type.String()),
+    stepName: Type.String({}),
 })
 
 export type PieceOptionRequest = Static<typeof PieceOptionRequest>
