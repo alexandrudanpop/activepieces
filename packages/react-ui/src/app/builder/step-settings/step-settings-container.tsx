@@ -56,30 +56,33 @@ const StepSettingsContainer = React.memo(
 
     const { toast } = useToast();
 
+
+    const updateTrigger = (newTrigger: Trigger) => {
+      applyOperation(
+        {
+          type: FlowOperationType.UPDATE_TRIGGER,
+          request: newTrigger,
+        },
+        () => toast(UNSAVED_CHANGES_TOAST),
+      );
+    };
+    
     const debouncedTrigger = useMemo(() => {
-      const updateTrigger = (newTrigger: Trigger) => {
-        applyOperation(
-          {
-            type: FlowOperationType.UPDATE_TRIGGER,
-            request: newTrigger,
-          },
-          () => toast(UNSAVED_CHANGES_TOAST),
-        );
-      };
       return debounce(updateTrigger, 200);
     }, [applyOperation]);
 
-    const debouncedAction = useMemo(() => {
-      const updateAction = (newAction: Action) => {
-        applyOperation(
-          {
-            type: FlowOperationType.UPDATE_ACTION,
-            request: newAction,
-          },
-          () => toast(UNSAVED_CHANGES_TOAST),
-        );
-      };
 
+    const updateAction = (newAction: Action) => {
+      applyOperation(
+        {
+          type: FlowOperationType.UPDATE_ACTION,
+          request: newAction,
+        },
+        () => toast(UNSAVED_CHANGES_TOAST),
+      );
+    };
+
+    const debouncedAction = useMemo(() => {
       return debounce(updateAction, 200);
     }, [applyOperation]);
 
@@ -97,7 +100,7 @@ const StepSettingsContainer = React.memo(
       disabled: readonly,
       reValidateMode: 'onChange',
       defaultValues: useMemo(() => {
-        return formUtils.buildPieceDefaultValue(selectedStep, pieceModel!);
+        return formUtils.buildPieceDefaultValue(selectedStep, pieceModel!, true);
       }, [selectedStep, pieceModel]),
       resolver: typeboxResolver(formSchema),
     });
@@ -147,12 +150,14 @@ const StepSettingsContainer = React.memo(
 
     useUpdateEffect(() => {
       const currentStep = JSON.parse(JSON.stringify(form.getValues()));
-      const newValue = formUtils.buildPieceDefaultValue(
-        currentStep,
-        pieceModel!,
-      );
-      form.reset(newValue);
-      form.trigger();
+      const defaultValues = formUtils.buildPieceDefaultValue(currentStep, pieceModel!, false);
+      if (defaultValues.type === TriggerType.PIECE) {
+        const triggerName = defaultValues.settings.triggerName;
+        updateTrigger(defaultValues);
+      } else {
+        const actionName = defaultValues.settings.actionName;
+        updateAction(defaultValues as Action);
+      }
     }, [actionName, triggerName]);
 
     useUpdateEffect(() => {
@@ -205,40 +210,43 @@ const StepSettingsContainer = React.memo(
                     ></PieceCardInfo>
                   )}
                   {modifiedStep.type === ActionType.LOOP_ON_ITEMS && (
-                    <LoopsSettings></LoopsSettings>
+                    <LoopsSettings readonly={readonly}></LoopsSettings>
                   )}
                   {modifiedStep.type === ActionType.CODE && (
                     <CodeSettings readonly={readonly}></CodeSettings>
                   )}
                   {modifiedStep.type === ActionType.BRANCH && (
-                    <BranchSettings></BranchSettings>
+                    <BranchSettings readonly={readonly}></BranchSettings>
                   )}
                   {modifiedStep.type === ActionType.PIECE && modifiedStep && (
                     <PieceSettings
                       step={modifiedStep}
                       flowId={flowVersion.flowId}
+                      readonly={readonly}
                     ></PieceSettings>
                   )}
                   {modifiedStep.type === TriggerType.PIECE && modifiedStep && (
                     <PieceSettings
                       step={modifiedStep}
                       flowId={flowVersion.flowId}
+                      readonly={readonly}
                     ></PieceSettings>
                   )}
                   {[ActionType.CODE, ActionType.PIECE].includes(
                     modifiedStep.type as ActionType,
                   ) && (
-                    <ActionErrorHandlingForm
-                      hideContinueOnFailure={
-                        modifiedStep.settings.errorHandlingOptions
-                          ?.continueOnFailure?.hide
-                      }
-                      hideRetryOnFailure={
-                        modifiedStep.settings.errorHandlingOptions
-                          ?.retryOnFailure?.hide
-                      }
-                    ></ActionErrorHandlingForm>
-                  )}
+                      <ActionErrorHandlingForm
+                        hideContinueOnFailure={
+                          modifiedStep.settings.errorHandlingOptions
+                            ?.continueOnFailure?.hide
+                        }
+                        disabled={readonly}
+                        hideRetryOnFailure={
+                          modifiedStep.settings.errorHandlingOptions
+                            ?.retryOnFailure?.hide
+                        }
+                      ></ActionErrorHandlingForm>
+                    )}
                 </div>
               </ScrollArea>
             </ResizablePanel>

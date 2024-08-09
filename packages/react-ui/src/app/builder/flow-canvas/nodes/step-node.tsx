@@ -53,6 +53,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
     clickOnNewNodeButton,
     selectedStep,
     run,
+    readonly,
   ] = useBuilderStateContext((state) => [
     state.selectStepByName,
     state.setAllowCanvasPanning,
@@ -61,6 +62,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
     state.clickOnNewNodeButton,
     state.selectedStep,
     state.run,
+    state.readonly,
   ]);
 
   const deleteStep = useBuilderStateContext((state) => () => {
@@ -101,7 +103,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
 
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: data.step!.name,
-    disabled: true,
+    disabled: isTrigger,
   });
 
   const stepOutputStatus = useMemo(
@@ -125,6 +127,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
 
   return (
     <div
+      id={data.step!.name}
       style={{
         boxShadow:
           (isSelected || toolbarOpen) && !isDragging
@@ -143,7 +146,7 @@ const ApStepNode = React.memo(({ data }: { data: ApNode['data'] }) => {
       })}
       onClick={(e) => handleStepClick(e)}
       onMouseEnter={() => {
-        setToolbarOpen(true);
+        setToolbarOpen(true && !readonly);
         setAllowCanvasPanning(false);
       }}
       onMouseLeave={() => {
