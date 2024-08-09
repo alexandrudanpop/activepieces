@@ -76,7 +76,6 @@ function traverseFlow(step: Action | Trigger | undefined): ApGraph {
     // change branch to switch case
     case ActionType.BRANCH: {
       const { nextAction, onSuccessAction, onFailureAction } = step;
-      console.log('BRANCH', step);
 
       const childrenGraphs = [onSuccessAction, onFailureAction].map(
         (g, index) => {
@@ -102,7 +101,6 @@ function traverseFlow(step: Action | Trigger | undefined): ApGraph {
       );
     }
     case ActionType.SWITCH: {
-      console.log('SWITCH', step);
       const { nextAction } = step;
 
       const childrenGraphs = step.switchActions.map((g, index) => {
